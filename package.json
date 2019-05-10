@@ -1,6 +1,6 @@
 {
   "name": "ali-mns-sdk",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "The nodejs SDK for aliyun mns service",
   "main": "index.js",
   "dependencies": {
@@ -23,6 +23,7 @@
     "gulp-header": "^1.8.2",
     "gulp-newer": "^1.1.0",
     "gulp-replace": "^0.5.4",
+    "gulp-shell": "^0.7.0",
     "gulp-sourcemaps": "^1.9.1",
     "gulp-typescript": "^3.1.7",
     "mocha": "^3.4.2",
@@ -31,7 +32,7 @@
     "typescript": "^2.3.4"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "gulp build",
     "test": "node node_modules/mocha/bin/mocha"
   },
   "repository": {

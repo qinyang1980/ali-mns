@@ -1,4 +1,4 @@
-import * as Events from 'events';
+import { EventEmitter } from 'events';
 import { GA } from './GA';
 import { IMQ, IMQBatch, INotifyRecvBatch } from './Interfaces';
 import { MQ } from './MQ';
@@ -9,7 +9,7 @@ export class NotifyRecv implements INotifyRecvBatch {
     this._mq = mq;
 
     // emitter
-    this._emitter = new Events.EventEmitter();
+    this._emitter = new EventEmitter();
 
     // Google Analytics
     if (mq instanceof MQ) {
@@ -21,7 +21,7 @@ export class NotifyRecv implements INotifyRecvBatch {
 
   // 消息通知.每当有消息收到时,都调用cb回调函数
   // 如果cb返回true,那么将删除消息,否则保留消息
-  public notifyRecv(cb: (ex: Error, msg: any) => Boolean, waitSeconds?: number, numOfMessages?: number) {
+  public notifyRecv(cb: (ex: Error, msg: any) => Boolean, waitSeconds?: number, numOfMessages?: number): void {
     this._signalSTOP = false;
     this._timeoutCount = 0;
     this.notifyRecvInternal(cb, waitSeconds, numOfMessages);
@@ -30,7 +30,7 @@ export class NotifyRecv implements INotifyRecvBatch {
   }
 
   // 停止消息通知
-  public notifyStopP() {
+  public notifyStopP(): Promise<string> {
     if (this._signalSTOP) return Promise.resolve(this._evStopped);
     // Google Analytics
     if (this._ga) this._ga.send('NotifyRecv.notifyStopP', 0, '');
@@ -128,7 +128,7 @@ export class NotifyRecv implements INotifyRecvBatch {
   private _signalSTOP = true;
 
   private _evStopped = 'AliMNS_MQ_NOTIFY_STOPPED';
-  private _emitter: any;
+  private _emitter: EventEmitter;
 
   // 连续timeout计数器
   // 在某种未知的原因下,网络底层链接断了
