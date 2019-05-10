@@ -1,15 +1,5 @@
-import { Account } from './Account';
-import { MNS } from './MNS';
-import { MQ } from './MQ';
-import { MQBatch } from './MQBatch';
-import { Msg } from './Msg';
-
-const AliMNS = {
-  MNS,
-  Account,
-  Msg,
-  MQ,
-  MQBatch,
-};
-
-export default AliMNS;
+export * from './Account';
+export * from './MNS';
+export * from './MQ';
+export * from './MQBatch';
+export * from './Msg';
