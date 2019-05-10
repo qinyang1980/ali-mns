@@ -45,16 +45,16 @@ export class MQ implements IMQ, INotifyRecv {
 
   // 设置MQ的属性值
   public setAttrsP(options: any) {
-    var body = { Queue: options };
+    const body = { Queue: options };
     debug('PUT ' + this._urlAttr, body);
     return this._openStack.sendP('PUT', this._urlAttr + '?metaoverride=true', body);
   }
 
   // 发送消息
   public sendP(msg: string, priority?: number, delaySeconds?: number) {
-    var b64 = this.utf8ToBase64(msg);
+    const b64 = this.utf8ToBase64(msg);
 
-    var body: any = { Message: { MessageBody: b64 } };
+    const body: any = { Message: { MessageBody: b64 } };
     if (!isNaN(priority)) body.Message.Priority = priority;
     if (!isNaN(delaySeconds)) body.Message.DelaySeconds = delaySeconds;
 
@@ -74,14 +74,14 @@ export class MQ implements IMQ, INotifyRecv {
   // 接收消息
   // waitSeconds, 最久等待多少秒0~30
   public recvP(waitSeconds?: number) {
-    var _this = this;
-    var url = this._url;
+    const _this = this;
+    let url = this._url;
     if (waitSeconds) url += '?waitseconds=' + waitSeconds;
     debug('GET ' + url);
 
     return new Promise(function(resolve, reject) {
       // use the timeout mechanism inside the request module
-      var options = { timeout: 1000 * _this._recvTolerance };
+      const options = { timeout: 1000 * _this._recvTolerance };
       if (waitSeconds) options.timeout += 1000 * waitSeconds;
 
       _this._openStack.accumulateNextGASend('MQ.recvP');
@@ -96,7 +96,7 @@ export class MQ implements IMQ, INotifyRecv {
         function(ex) {
           // for compatible with 1.x, still use literal "timeout"
           if (ex.code === 'ETIMEDOUT') {
-            var exTimeout: any = new Error('timeout');
+            const exTimeout: any = new Error('timeout');
             exTimeout.innerException = ex;
             exTimeout.code = ex.code;
             reject(exTimeout);
@@ -110,8 +110,8 @@ export class MQ implements IMQ, INotifyRecv {
 
   // 检查消息
   public peekP() {
-    var _this = this;
-    var url = this._url + '?peekonly=true';
+    const _this = this;
+    const url = this._url + '?peekonly=true';
     debug('GET ' + url);
     this._openStack.accumulateNextGASend('MQ.peekP');
     return this._openStack.sendP('GET', url).then(function(data) {
@@ -123,7 +123,7 @@ export class MQ implements IMQ, INotifyRecv {
 
   // 删除消息
   public deleteP(receiptHandle: string) {
-    var url = this._url + '?ReceiptHandle=' + receiptHandle;
+    const url = this._url + '?ReceiptHandle=' + receiptHandle;
     debug('DELETE ' + url);
     this._openStack.accumulateNextGASend('MQ.deleteP');
     return this._openStack.sendP('DELETE', url);
@@ -131,7 +131,7 @@ export class MQ implements IMQ, INotifyRecv {
 
   // 保留消息
   public reserveP(receiptHandle: string, reserveSeconds: number) {
-    var url = this._url + '?ReceiptHandle=' + receiptHandle + '&VisibilityTimeout=' + reserveSeconds;
+    const url = this._url + '?ReceiptHandle=' + receiptHandle + '&VisibilityTimeout=' + reserveSeconds;
     debug('PUT ' + url);
     this._openStack.accumulateNextGASend('MQ.reserveP');
     return this._openStack.sendP('PUT', url);
@@ -153,12 +153,12 @@ export class MQ implements IMQ, INotifyRecv {
   }
 
   protected utf8ToBase64(src) {
-    var buf = new Buffer(src, 'utf8');
+    const buf = new Buffer(src, 'utf8');
     return buf.toString('base64');
   }
 
   protected base64ToUtf8(src) {
-    var buf = new Buffer(src, 'base64');
+    const buf = new Buffer(src, 'base64');
     return buf.toString('utf8');
   }
 

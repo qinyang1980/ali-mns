@@ -46,24 +46,24 @@ export class Topic implements ITopic {
 
   // 设置Topic的属性值
   public setAttrsP(options: any) {
-    var body = { Topic: options };
+    const body = { Topic: options };
     debug('PUT ' + this._urlAttr, body);
     return this._openStack.sendP('PUT', this._urlAttr + '?metaoverride=true', body);
   }
 
   // List all subscriptions.
   public listP(prefix?: string, pageSize?: number, pageMarker?: string) {
-    var headers = {};
+    const headers = {};
     if (prefix) headers['x-mns-prefix'] = prefix;
     if (pageMarker) headers['x-mns-marker'] = pageMarker;
     if (pageSize) headers['x-mns-ret-number'] = pageSize;
-    var url = this._urlSubscription.slice(0, -1);
+    const url = this._urlSubscription.slice(0, -1);
     debug('GET ' + url);
     return this._openStack.sendP('GET', url, null, headers);
   }
 
   public subscribeP(name: string, endPoint: string, notifyStrategy?: string, notifyContentFormat?: string, filterTag?: string) {
-    var body = {
+    const body = {
       Subscription: {
         Endpoint: endPoint,
       },
@@ -71,26 +71,26 @@ export class Topic implements ITopic {
     if (notifyStrategy) body.Subscription['NotifyStrategy'] = notifyStrategy;
     if (notifyContentFormat) body.Subscription['NotifyContentFormat'] = notifyContentFormat;
     if (filterTag) body.Subscription['FilterTag'] = filterTag;
-    var url = Url.resolve(this._urlSubscription, name);
+    const url = Url.resolve(this._urlSubscription, name);
     debug('PUT ' + url, body);
     return this._openStack.sendP('PUT', url, body);
   }
 
   public unsubscribeP(name: string) {
-    var url = Url.resolve(this._urlSubscription, name);
+    const url = Url.resolve(this._urlSubscription, name);
     debug('DELETE ' + url);
     return this._openStack.sendP('DELETE', url);
   }
 
   public publishP(msg: string, b64: boolean, tag?: string, attrs?: any, options?: any) {
-    var msgBlock: any = {
+    const msgBlock: any = {
       MessageBody: b64 ? this.utf8ToBase64(msg) : msg,
     };
 
     if (tag) msgBlock.MessageTag = tag;
     if (attrs) msgBlock.MessageAttributes = attrs;
 
-    var body = {
+    const body = {
       Message: msgBlock,
     };
 
@@ -101,7 +101,7 @@ export class Topic implements ITopic {
   }
 
   protected utf8ToBase64(src) {
-    var buf = new Buffer(src, 'utf8');
+    const buf = new Buffer(src, 'utf8');
     return buf.toString('base64');
   }
 

@@ -1,7 +1,7 @@
 import * as CryptoA from 'crypto';
 import * as UA from 'universal-analytics';
 
-declare var gitVersion: any;
+declare const gitVersion: any;
 export class GA {
   public constructor(accId: string) {
     this._gitMark = gitVersion.branch + '.' + gitVersion.rev + '@' + gitVersion.hash;
@@ -13,7 +13,7 @@ export class GA {
       if (this._bAccumulated) {
         // 累积多个一起发送
         this._bAccumulated = false;
-        var actionPrefixed = this._bAccumulatePrefix + ':' + action;
+        const actionPrefixed = this._bAccumulatePrefix + ':' + action;
         if (!this._accumulation[actionPrefixed]) this._accumulation[actionPrefixed] = { value: 0, count: 0 };
         this._accumulation[actionPrefixed].value += value;
         this._accumulation[actionPrefixed].count++;
@@ -24,7 +24,7 @@ export class GA {
           this._accumulation[actionPrefixed].count = 0;
         }
       } else {
-        var args = { dl: url.replace(this._rgxAccId, '//0.') };
+        const args = { dl: url.replace(this._rgxAccId, '//0.') };
         // catagory, action, label, value, params
         this._visitor.event('AliMNS', action, this._gitMark, value, args).send();
       }
@@ -41,11 +41,11 @@ export class GA {
   }
 
   private u2id(uid: string) {
-    var cryptoMD5 = CryptoA.createHash('md5');
-    var md5HEX = cryptoMD5.update(uid).digest('hex');
+    const cryptoMD5 = CryptoA.createHash('md5');
+    const md5HEX = cryptoMD5.update(uid).digest('hex');
 
-    var uxid = new Array(36);
-    for (var i = 0, j = 0; i < md5HEX.length; i++, j++) {
+    const uxid = new Array(36);
+    for (let i = 0, j = 0; i < md5HEX.length; i++, j++) {
       if (i === 8 || i === 12 || i === 16 || i === 20) {
         uxid[j] = '-';
         j++;

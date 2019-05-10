@@ -15,11 +15,11 @@ export class MQBatch extends MQ implements IMQBatch, INotifyRecvBatch {
     if (typeof msg === 'string') {
       return super.sendP(msg, priority, delaySeconds);
     } else {
-      var body: any = { Messages: { '#list': [] } };
-      for (var i = 0; i < msg.length; i++) {
-        var m: Msg = msg[i];
-        var b64 = this.utf8ToBase64(m.getMsg());
-        var xMsg: any = { Message: { MessageBody: b64 } };
+      const body: any = { Messages: { '#list': [] } };
+      for (let i = 0; i < msg.length; i++) {
+        const m: Msg = msg[i];
+        const b64 = this.utf8ToBase64(m.getMsg());
+        const xMsg: any = { Message: { MessageBody: b64 } };
         xMsg.Message.Priority = m.getPriority();
         xMsg.Message.DelaySeconds = m.getDelaySeconds();
 
@@ -35,8 +35,8 @@ export class MQBatch extends MQ implements IMQBatch, INotifyRecvBatch {
   public recvP(waitSeconds?: number, numOfMessages?: number) {
     if (numOfMessages === undefined) numOfMessages = 16;
     if (numOfMessages && numOfMessages > 1) {
-      var self = this;
-      var url = this._url;
+      const self = this;
+      let url = this._url;
       url += '?numOfMessages=' + numOfMessages;
       if (waitSeconds) url += '&waitseconds=' + waitSeconds;
 
@@ -44,7 +44,7 @@ export class MQBatch extends MQ implements IMQBatch, INotifyRecvBatch {
 
       return new Promise(function(resolve, reject) {
         // use the timeout mechanism inside the request module
-        var options = { timeout: 1000 * self._recvTolerance };
+        const options = { timeout: 1000 * self._recvTolerance };
         if (waitSeconds) options.timeout += 1000 * waitSeconds;
 
         self._openStack.accumulateNextGASend('MQBatch.recvP');
@@ -57,7 +57,7 @@ export class MQBatch extends MQ implements IMQBatch, INotifyRecvBatch {
           function(ex) {
             // for compatible with 1.x, still use literal "timeout"
             if (ex.code === 'ETIMEDOUT') {
-              var exTimeout: any = new Error('timeout');
+              const exTimeout: any = new Error('timeout');
               exTimeout.innerException = ex;
               exTimeout.code = ex.code;
               reject(exTimeout);
@@ -75,8 +75,8 @@ export class MQBatch extends MQ implements IMQBatch, INotifyRecvBatch {
   public peekP(numOfMessages?: number) {
     if (numOfMessages === undefined) numOfMessages = 16;
     if (numOfMessages && numOfMessages > 1) {
-      var self = this;
-      var url = this._url + '?peekonly=true';
+      const self = this;
+      let url = this._url + '?peekonly=true';
       url += '&numOfMessages=' + numOfMessages;
       debug('GET ' + url);
       this._openStack.accumulateNextGASend('MQBatch.peekP');
@@ -95,9 +95,9 @@ export class MQBatch extends MQ implements IMQBatch, INotifyRecvBatch {
       super.deleteP(receiptHandle);
     } else {
       debug('DELETE ' + this._url, receiptHandle);
-      var body: any = { ReceiptHandles: { '#list': [] } };
-      for (var i = 0; i < receiptHandle.length; i++) {
-        var r: any = { ReceiptHandle: receiptHandle[i] };
+      const body: any = { ReceiptHandles: { '#list': [] } };
+      for (let i = 0; i < receiptHandle.length; i++) {
+        const r: any = { ReceiptHandle: receiptHandle[i] };
         body.ReceiptHandles['#list'].push(r);
       }
       this._openStack.accumulateNextGASend('MQBatch.deleteP');
@@ -118,11 +118,11 @@ export class MQBatch extends MQ implements IMQBatch, INotifyRecvBatch {
     if (data && data.Messages && data.Messages.Message) {
       if (!Util.isArray(data.Messages.Message)) {
         // Just a single message, use an array to hold it
-        var msg = data.Messages.Message;
+        const msg = data.Messages.Message;
         data.Messages.Message = [msg];
       }
-      for (var i = 0; i < data.Messages.Message.length; i++) {
-        var msg = data.Messages.Message[i];
+      for (let i = 0; i < data.Messages.Message.length; i++) {
+        const msg = data.Messages.Message[i];
         if (msg.MessageBody) msg.MessageBody = this.base64ToUtf8(msg.MessageBody);
       }
     } else {

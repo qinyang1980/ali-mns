@@ -27,27 +27,27 @@ export class MNS implements IMNS {
 
   // List all mns.
   public listP(prefix?: string, pageSize?: number, pageMarker?: string) {
-    var headers = {};
+    const headers = {};
     if (prefix) headers['x-mns-prefix'] = prefix;
     if (pageMarker) headers['x-mns-marker'] = pageMarker;
     if (pageSize) headers['x-mns-ret-number'] = pageSize;
-    var url = this._url.slice(0, -1);
+    const url = this._url.slice(0, -1);
     debug('GET ' + url);
     return this._openStack.sendP('GET', url, null, headers);
   }
 
   // Create a message queue
   public createP(name: string, options?: any) {
-    var body = { Queue: '' };
+    const body = { Queue: '' };
     if (options) body.Queue = options;
-    var url = Url.resolve(this._url, name);
+    const url = Url.resolve(this._url, name);
     debug('PUT ' + url, body);
     return this._openStack.sendP('PUT', url, body);
   }
 
   // Delete a message queue
   public deleteP(name: string) {
-    var url = Url.resolve(this._url, name);
+    const url = Url.resolve(this._url, name);
     debug('DELETE ' + url);
     return this._openStack.sendP('DELETE', url);
   }

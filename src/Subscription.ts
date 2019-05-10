@@ -33,7 +33,7 @@ export class Subscription implements ISubscription {
 
   // 设置Subscription的属性值
   public setAttrsP(options: any) {
-    var body = { Subscription: options };
+    const body = { Subscription: options };
     debug('PUT ' + this._urlAttr, body);
     return this._openStack.sendP('PUT', this._urlAttr + '?metaoverride=true', body);
   }

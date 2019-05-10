@@ -15,27 +15,27 @@ export class MNSTopic extends MNS implements IMNSTopic {
 
   // List all topics.
   public listTopicP(prefix?: string, pageSize?: number, pageMarker?: string) {
-    var headers = {};
+    const headers = {};
     if (prefix) headers['x-mns-prefix'] = prefix;
     if (pageMarker) headers['x-mns-marker'] = pageMarker;
     if (pageSize) headers['x-mns-ret-number'] = pageSize;
-    var url = this._urlTopic.slice(0, -1);
+    const url = this._urlTopic.slice(0, -1);
     debug('GET ' + url);
     return this._openStack.sendP('GET', url, null, headers);
   }
 
   // Create a topic
   public createTopicP(name: string, options?: any) {
-    var body = { Topic: '' };
+    const body = { Topic: '' };
     if (options) body.Topic = options;
-    var url = Url.resolve(this._urlTopic, name);
+    const url = Url.resolve(this._urlTopic, name);
     debug('PUT ' + url, body);
     return this._openStack.sendP('PUT', url, body);
   }
 
   // Delete a topic
   public deleteTopicP(name: string) {
-    var url = Url.resolve(this._urlTopic, name);
+    const url = Url.resolve(this._urlTopic, name);
     debug('DELETE ' + url);
     return this._openStack.sendP('DELETE', url);
   }

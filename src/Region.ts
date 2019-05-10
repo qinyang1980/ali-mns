@@ -33,7 +33,7 @@ export class Region {
   }
 
   private networkToString(network: NetworkType): string {
-    var value: string;
+    let value: string;
     switch (network) {
       case NetworkType.Public:
         value = '';
@@ -51,7 +51,7 @@ export class Region {
   }
 
   private zoneToString(zone: Zone): string {
-    var value: string;
+    let value: string;
     switch (zone) {
       case Zone.China:
         value = 'cn';
@@ -75,7 +75,7 @@ export class Region {
   }
 
   private cityToString(city: City): string {
-    var value: string;
+    let value: string;
     switch (city) {
       case City.Beijing:
         value = 'beijing';
@@ -129,7 +129,7 @@ export class Region {
   }
 
   private cityToZone(city: City): string {
-    var value: string;
+    let value: string;
     switch (city) {
       case City.Beijing:
       case City.Shanghai:

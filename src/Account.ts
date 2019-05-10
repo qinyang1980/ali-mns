@@ -32,12 +32,12 @@ export class Account {
 
   // encoding: "hex", "binary" or "base64"
   public hmac_sha1(text: string, encoding?: string) {
-    var hmacSHA1: any = CryptoA.createHmac('sha1', this._keySecret);
+    const hmacSHA1: any = CryptoA.createHmac('sha1', this._keySecret);
     return hmacSHA1.update(text).digest(encoding);
   }
 
   public b64md5(text: string) {
-    var cryptoMD5 = CryptoA.createHash('md5');
+    const cryptoMD5 = CryptoA.createHash('md5');
     return cryptoMD5.update(new Buffer(text, 'utf-8')).digest('base64');
   }
 

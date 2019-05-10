@@ -24,14 +24,14 @@ export class OpenStack {
   // head: optional, request heads
   // options: optional, request options
   public sendP(method: string, url: string, body?: any, headers?: any, options?: any) {
-    var req: any = { method: method, url: url };
+    const req: any = { method: method, url: url };
     if (body) req.body = XmlBuilder.create(body).toString();
 
     req.headers = this.makeHeaders(method, url, headers, req.body);
 
     // combines options
     if (options) {
-      for (var opt in options) {
+      for (const opt in options) {
         if (opt === 'method' || opt === 'url' || opt === 'uri' || opt === 'body' || opt === 'headers') continue;
         // skip these options for avoid conflict to other arguments
         else if (options.hasOwnProperty(opt)) req[opt] = options[opt];
@@ -39,7 +39,7 @@ export class OpenStack {
     }
 
     const parseStringP = Promise.denodeify(Xml2js.parseString);
-    var ret = Request['requestP'](req)
+    const ret = Request['requestP'](req)
       .then(response => {
         // convert the body from xml to json
         return parseStringP(response.body, {
@@ -89,8 +89,8 @@ export class OpenStack {
         'User-Agent': 'Node/' + process.version + ' (' + process.platform + ')',
       };
 
-    var contentMD5 = '';
-    var contentType = '';
+    let contentMD5 = '';
+    let contentType = '';
     if (body) {
       if (!headers['Content-Length']) headers['Content-Length'] = new Buffer(body, 'utf-8').length;
       if (!headers['Content-Type']) headers['Content-Type'] = this._contentType;
@@ -103,11 +103,11 @@ export class OpenStack {
     if (!headers['x-mns-version']) headers['x-mns-version'] = this._version;
 
     // lowercase & sort & extract the x-mns-<any>
-    var headsLower: any = {};
-    var keys: Array<string> = [];
-    for (var key in headers) {
+    const headsLower: any = {};
+    const keys: Array<string> = [];
+    for (const key in headers) {
       if (headers.hasOwnProperty(key)) {
-        var lower = key.toLowerCase();
+        const lower = key.toLowerCase();
         keys.push(lower);
         headsLower[lower] = headers[key];
       }
@@ -115,16 +115,16 @@ export class OpenStack {
 
     keys.sort();
 
-    var mnsHeaders = '';
-    for (var i in keys) {
-      var k = keys[i];
+    let mnsHeaders = '';
+    for (const i in keys) {
+      const k = keys[i];
       if (typeof k === 'string' && k.indexOf('x-mns-') === 0) {
         mnsHeaders += Util.format('%s:%s\n', k, headsLower[k]);
       }
     }
 
-    var tm = new Date().toUTCString();
-    var mnsURL: any = Url.parse(url);
+    const tm = new Date().toUTCString();
+    const mnsURL: any = Url.parse(url);
     headers.Date = tm;
     headers.Authorization = this.authorize(mothod, mnsURL.path, mnsHeaders, contentType, contentMD5, tm);
     headers.Host = mnsURL.host;
@@ -143,7 +143,7 @@ export class OpenStack {
 
   // ali mns signature
   private signature(httpVerb: string, mnsURI: string, mnsHeaders: string, contentType: string, contentMD5: string, tm: string) {
-    var text = Util.format(this._patternSign, httpVerb, contentMD5, contentType, tm, mnsHeaders, mnsURI);
+    const text = Util.format(this._patternSign, httpVerb, contentMD5, contentType, tm, mnsHeaders, mnsURI);
 
     return this._account.hmac_sha1(text, 'base64');
   }

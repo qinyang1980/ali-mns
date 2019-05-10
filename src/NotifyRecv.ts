@@ -13,7 +13,7 @@ export class NotifyRecv implements INotifyRecvBatch {
 
     // Google Analytics
     if (mq instanceof MQ) {
-      var account = mq.getAccount();
+      const account = mq.getAccount();
       this._ga = new GA(account.getAccountId());
       this._ga.disableGA(!account.getGA());
     }
@@ -54,7 +54,7 @@ export class NotifyRecv implements INotifyRecvBatch {
     debug('notifyRecvInternal()');
 
     try {
-      var mqBatch: IMQBatch = this._mq;
+      const mqBatch: IMQBatch = this._mq;
       mqBatch.recvP(waitSeconds, numOfMessages).done(
         dataRecv => {
           try {
@@ -110,11 +110,11 @@ export class NotifyRecv implements INotifyRecvBatch {
       if (dataRecv.Message) {
         return this._mq.deleteP(dataRecv.Message.ReceiptHandle);
       } else if (dataRecv.Messages && dataRecv.Messages.Message) {
-        var rhs = [];
-        for (var i = 0; i < dataRecv.Messages.Message.length; i++) {
+        const rhs = [];
+        for (let i = 0; i < dataRecv.Messages.Message.length; i++) {
           rhs.push(dataRecv.Messages.Message[i].ReceiptHandle);
         }
-        var mqBatch: IMQBatch = this._mq;
+        const mqBatch: IMQBatch = this._mq;
         return mqBatch.deleteP(rhs);
       } else {
         return Promise.resolve(dataRecv);

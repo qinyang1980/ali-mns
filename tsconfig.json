@@ -20,6 +20,7 @@
     "skipDefaultLibCheck": true,
     "inlineSourceMap": true,
     "importHelpers": true,
+    "declaration": true,
     "outDir": "./dist"
   },
   "include": ["src/**/*", "ali-mns.ts"],
