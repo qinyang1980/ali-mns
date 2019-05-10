@@ -48,7 +48,7 @@ export class MQBatch extends MQ implements IMQBatch, INotifyRecvBatch {
         if (waitSeconds) options.timeout += 1000 * waitSeconds;
 
         self._openStack.accumulateNextGASend('MQBatch.recvP');
-        self._openStack.sendP('GET', url, null, null, options).done(
+        self._openStack.sendP('GET', url, null, null, options).then(
           function(data) {
             debug(data);
             self.decodeB64Messages(data);

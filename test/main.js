@@ -3,7 +3,6 @@
 var assert = require('assert');
 var Path = require('path');
 var fs = require('fs');
-var Promise = require('promise');
 var AliMNS = require(Path.join(__dirname, '../dist/index.js'));
 
 describe('AliMNS-main', function() {
@@ -181,7 +180,7 @@ describe('AliMNS-main', function() {
               }
 
               if (notifyCount >= 3) {
-                mq.notifyStopP().done(function() {
+                mq.notifyStopP().then(function() {
                   if (notifyConfirmed >= 3) resolve('notifyRecv task succeed!');
                   else reject('notifyRecv task failed!');
                 });

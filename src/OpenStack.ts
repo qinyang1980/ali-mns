@@ -1,4 +1,4 @@
-import * as Promise from 'promise';
+import * as PROMISE from 'promise';
 import * as Url from 'url';
 import * as Util from 'util';
 import * as Xml2js from 'xml2js';
@@ -38,7 +38,7 @@ export class OpenStack {
       }
     }
 
-    const parseStringP = Promise.denodeify(Xml2js.parseString);
+    const parseStringP = PROMISE.denodeify(Xml2js.parseString);
     const ret = Request['requestP'](req)
       .then(response => {
         // convert the body from xml to json

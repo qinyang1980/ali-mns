@@ -55,13 +55,13 @@ export class NotifyRecv implements INotifyRecvBatch {
 
     try {
       const mqBatch: IMQBatch = this._mq;
-      mqBatch.recvP(waitSeconds, numOfMessages).done(
+      mqBatch.recvP(waitSeconds, numOfMessages).then(
         dataRecv => {
           try {
             debug(dataRecv);
             this._timeoutCount = 0;
             if (cb(null, dataRecv)) {
-              this.deleteP(dataRecv).done(null, ex => {
+              this.deleteP(dataRecv).then(null, ex => {
                 console.log(ex);
               });
             }

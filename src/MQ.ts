@@ -85,7 +85,7 @@ export class MQ implements IMQ, INotifyRecv {
       if (waitSeconds) options.timeout += 1000 * waitSeconds;
 
       _this._openStack.accumulateNextGASend('MQ.recvP');
-      _this._openStack.sendP('GET', url, null, null, options).done(
+      _this._openStack.sendP('GET', url, null, null, options).then(
         function(data) {
           debug(data);
           if (data && data.Message && data.Message.MessageBody) {
