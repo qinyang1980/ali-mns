@@ -12,7 +12,9 @@
     "xmlbuilder": "^3.1.0"
   },
   "devDependencies": {
-    "@types/node": "^7.0.22",
+    "@types/debug": "^4.1.4",
+    "@types/node": "^12.0.0",
+    "@types/xml2js": "^0.4.4",
     "del": "^2.2.0",
     "git-version-json": "^1.0.5",
     "gulp": "^3.9.1",
@@ -25,22 +27,18 @@
     "gulp-typescript": "^3.1.7",
     "mocha": "^3.4.2",
     "should": "^7.1.1",
+    "tslint-config-egg": "^1.0.0",
     "typescript": "^2.3.4"
   },
   "scripts": {
-    "prepare": "gulp",
+    "build": "tsc",
     "test": "node node_modules/mocha/bin/mocha"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/InCar/ali-mns.git"
   },
-  "keywords": [
-    "aliyun",
-    "mns",
-    "mqs",
-    "incar"
-  ],
+  "keywords": ["aliyun", "mns", "mqs", "incar"],
   "author": "ghxiong@incardata.com.cn",
   "license": "MIT",
   "bugs": {
