@@ -139,7 +139,7 @@ export class MQ implements IMQ, INotifyRecv {
 
   // 消息通知.每当有消息收到时,都调用cb回调函数
   // 如果cb返回true,那么将删除消息,否则保留消息
-  public notifyRecv(cb: (ex: Error, msg: any) => Boolean, waitSeconds?: number) {
+  public notifyRecv(cb: (ex: Error, msg: any) => Promise<boolean>, waitSeconds?: number) {
     // lazy create
     if (this._notifyRecv === null) this._notifyRecv = new NotifyRecv(this);
 

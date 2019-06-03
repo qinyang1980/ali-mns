@@ -21,7 +21,7 @@ export class NotifyRecv implements INotifyRecvBatch {
 
   // 消息通知.每当有消息收到时,都调用cb回调函数
   // 如果cb返回true,那么将删除消息,否则保留消息
-  public notifyRecv(cb: (ex: Error, msg: any) => Boolean, waitSeconds?: number, numOfMessages?: number): void {
+  public notifyRecv(cb: (ex: Error, msg: any) => Promise<boolean>, waitSeconds?: number, numOfMessages?: number): void {
     this._signalSTOP = false;
     this._timeoutCount = 0;
     this.notifyRecvInternal(cb, waitSeconds, numOfMessages);
@@ -43,7 +43,7 @@ export class NotifyRecv implements INotifyRecvBatch {
     });
   }
 
-  private notifyRecvInternal(cb: (ex: Error, msg: any) => Boolean, waitSeconds: number, numOfMessages?: number) {
+  private notifyRecvInternal(cb: (ex: Error, msg: any) => Promise<boolean>, waitSeconds: number, numOfMessages?: number) {
     // This signal will be triggered by notifyStopP()
     if (this._signalSTOP) {
       debug('notifyStopped');

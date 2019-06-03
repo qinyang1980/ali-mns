@@ -47,12 +47,12 @@ export interface IMQBatch extends IMQ {
 }
 
 export interface INotifyRecv {
-  notifyRecv(cb: (ex: Error, msg: any) => Boolean, waitSeconds?: number);
+  notifyRecv(cb: (ex: Error, msg: any) => Promise<boolean>, waitSeconds?: number);
   notifyStopP();
 }
 
 export interface INotifyRecvBatch extends INotifyRecv {
-  notifyRecv(cb: (ex: Error, msg: any) => Boolean, waitSeconds?: number, numOfMessages?: number);
+  notifyRecv(cb: (ex: Error, msg: any) => Promise<boolean>, waitSeconds?: number, numOfMessages?: number);
 }
 
 export interface ITopic {
