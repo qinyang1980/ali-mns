@@ -162,11 +162,7 @@ export class MQ implements IMQ, INotifyRecv {
 
   protected decodeB64Messages(data: any) {
     if (data && data.Message && data.Message.MessageBody) {
-      if (data.Message.MessageBody.Message) {
-        data.Message.MessageBody.Message = this.base64ToUtf8(data.Message.MessageBody.Message);
-      } else {
-        data.Message.MessageBody = this.base64ToUtf8(data.Message.MessageBody);
-      }
+      data.Message.MessageBody = this.base64ToUtf8(data.Message.MessageBody);
     }
   }
 
