@@ -88,9 +88,7 @@ export class MQ implements IMQ, INotifyRecv {
       _this._openStack.sendP('GET', url, null, null, options).then(
         function(data) {
           debug(data);
-          if (data && data.Message && data.Message.MessageBody) {
-            data.Message.MessageBody = _this.base64ToUtf8(data.Message.MessageBody);
-          }
+          _this.decodeB64Messages(data);
           resolve(data);
         },
         function(ex) {
@@ -164,7 +162,11 @@ export class MQ implements IMQ, INotifyRecv {
 
   protected decodeB64Messages(data: any) {
     if (data && data.Message && data.Message.MessageBody) {
-      data.Message.MessageBody = this.base64ToUtf8(data.Message.MessageBody);
+      if (data.Message.MessageBody.Message) {
+        data.Message.MessageBody.Message = this.base64ToUtf8(data.Message.MessageBody.Message);
+      } else {
+        data.Message.MessageBody = this.base64ToUtf8(data.Message.MessageBody);
+      }
     }
   }
 
