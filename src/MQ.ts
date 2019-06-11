@@ -79,19 +79,19 @@ export class MQ implements IMQ, INotifyRecv {
     if (waitSeconds) url += '?waitseconds=' + waitSeconds;
     debug('GET ' + url);
 
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) => {
       // use the timeout mechanism inside the request module
-      const options = { timeout: 1000 * _this._recvTolerance };
-      if (waitSeconds) options.timeout += 1000 * waitSeconds;
+      const options = { timeout: _this._recvTolerance * 1000 };
+      if (waitSeconds) options.timeout += waitSeconds * 1000;
 
       _this._openStack.accumulateNextGASend('MQ.recvP');
       _this._openStack.sendP('GET', url, null, null, options).then(
-        function(data) {
+        data => {
           debug(data);
           _this.decodeB64Messages(data);
           resolve(data);
         },
-        function(ex) {
+        ex => {
           // for compatible with 1.x, still use literal "timeout"
           if (ex.code === 'ETIMEDOUT') {
             const exTimeout: any = new Error('timeout');
@@ -112,7 +112,7 @@ export class MQ implements IMQ, INotifyRecv {
     const url = this._url + '?peekonly=true';
     debug('GET ' + url);
     this._openStack.accumulateNextGASend('MQ.peekP');
-    return this._openStack.sendP('GET', url).then(function(data) {
+    return this._openStack.sendP('GET', url).then(data => {
       debug(data);
       _this.decodeB64Messages(data);
       return data;

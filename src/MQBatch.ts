@@ -11,13 +11,12 @@ export class MQBatch extends MQ implements IMQBatch, INotifyRecvBatch {
     super(name, account, region);
   }
 
-  public sendP(msg: string | Array<Msg>, priority?: number, delaySeconds?: number) {
+  public sendP(msg: string | Msg[], priority?: number, delaySeconds?: number) {
     if (typeof msg === 'string') {
       return super.sendP(msg, priority, delaySeconds);
     } else {
       const body: any = { Messages: { '#list': [] } };
-      for (let i = 0; i < msg.length; i++) {
-        const m: Msg = msg[i];
+      for (const m of msg) {
         const b64 = this.utf8ToBase64(m.getMsg());
         const xMsg: any = { Message: { MessageBody: b64 } };
         xMsg.Message.Priority = m.getPriority();
@@ -42,19 +41,19 @@ export class MQBatch extends MQ implements IMQBatch, INotifyRecvBatch {
 
       debug('GET ' + url);
 
-      return new Promise(function(resolve, reject) {
+      return new Promise((resolve, reject) => {
         // use the timeout mechanism inside the request module
-        const options = { timeout: 1000 * self._recvTolerance };
-        if (waitSeconds) options.timeout += 1000 * waitSeconds;
+        const options = { timeout: self._recvTolerance * 1000 };
+        if (waitSeconds) options.timeout += waitSeconds * 1000;
 
         self._openStack.accumulateNextGASend('MQBatch.recvP');
         self._openStack.sendP('GET', url, null, null, options).then(
-          function(data) {
+          data => {
             debug(data);
             self.decodeB64Messages(data);
             resolve(data);
           },
-          function(ex) {
+          ex => {
             // for compatible with 1.x, still use literal "timeout"
             if (ex.code === 'ETIMEDOUT') {
               const exTimeout: any = new Error('timeout');
@@ -80,7 +79,7 @@ export class MQBatch extends MQ implements IMQBatch, INotifyRecvBatch {
       url += '&numOfMessages=' + numOfMessages;
       debug('GET ' + url);
       this._openStack.accumulateNextGASend('MQBatch.peekP');
-      return this._openStack.sendP('GET', url).then(function(data) {
+      return this._openStack.sendP('GET', url).then(data => {
         debug(data);
         self.decodeB64Messages(data);
         return data;
@@ -90,14 +89,14 @@ export class MQBatch extends MQ implements IMQBatch, INotifyRecvBatch {
     }
   }
 
-  public deleteP(receiptHandle: string | Array<string>) {
+  public deleteP(receiptHandle: string | string[]) {
     if (typeof receiptHandle === 'string') {
       super.deleteP(receiptHandle);
     } else {
       debug('DELETE ' + this._url, receiptHandle);
       const body: any = { ReceiptHandles: { '#list': [] } };
-      for (let i = 0; i < receiptHandle.length; i++) {
-        const r: any = { ReceiptHandle: receiptHandle[i] };
+      for (const h of receiptHandle) {
+        const r = { ReceiptHandle: h };
         body.ReceiptHandles['#list'].push(r);
       }
       this._openStack.accumulateNextGASend('MQBatch.deleteP');
@@ -121,8 +120,7 @@ export class MQBatch extends MQ implements IMQBatch, INotifyRecvBatch {
         const msg = data.Messages.Message;
         data.Messages.Message = [msg];
       }
-      for (let i = 0; i < data.Messages.Message.length; i++) {
-        const msg = data.Messages.Message[i];
+      for (const msg of data.Messages.Message) {
         if (msg.MessageBody) msg.MessageBody = this.base64ToUtf8(msg.MessageBody);
       }
     } else {

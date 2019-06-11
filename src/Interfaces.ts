@@ -37,13 +37,13 @@ export interface IMQ {
 
 export interface IMQBatch extends IMQ {
   // 发送消息
-  sendP(msg: string | Array<Msg>, priority?: number, delaySeconds?: number);
+  sendP(msg: string | Msg[], priority?: number, delaySeconds?: number);
   // 接收消息
   recvP(waitSeconds?: number, numOfMessages?: number);
   // 检查消息
   peekP(numOfMessages?: number);
   // 删除消息
-  deleteP(receiptHandle: string | Array<string>);
+  deleteP(receiptHandle: string | string[]);
 }
 
 export interface INotifyRecv {

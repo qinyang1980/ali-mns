@@ -111,8 +111,8 @@ export class NotifyRecv implements INotifyRecvBatch {
         return this._mq.deleteP(dataRecv.Message.ReceiptHandle);
       } else if (dataRecv.Messages && dataRecv.Messages.Message) {
         const rhs = [];
-        for (let i = 0; i < dataRecv.Messages.Message.length; i++) {
-          rhs.push(dataRecv.Messages.Message[i].ReceiptHandle);
+        for (const msg of dataRecv.Messages.Message) {
+          rhs.push(msg.ReceiptHandle);
         }
         const mqBatch: IMQBatch = this._mq;
         return mqBatch.deleteP(rhs);

@@ -25,11 +25,13 @@
     "gulp-replace": "^0.5.4",
     "gulp-shell": "^0.7.0",
     "gulp-sourcemaps": "^1.9.1",
+    "gulp-tslint": "^8.1.4",
     "gulp-typescript": "^3.1.7",
     "mocha": "^3.4.2",
     "should": "^7.1.1",
+    "tslint": "^5.17.0",
     "tslint-config-egg": "^1.0.0",
-    "typescript": "^2.3.4"
+    "typescript": "^3.5.1"
   },
   "scripts": {
     "build": "gulp build",
@@ -39,7 +41,11 @@
     "type": "git",
     "url": "https://github.com/InCar/ali-mns.git"
   },
-  "keywords": ["aliyun", "mns", "mqs"],
+  "keywords": [
+    "aliyun",
+    "mns",
+    "mqs"
+  ],
   "author": "qinyang_1980@qq.com",
   "license": "MIT",
   "bugs": {

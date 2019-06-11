@@ -13,8 +13,9 @@ export class Region {
     }
 
     if (city) {
-      if (typeof city === 'string') this._city = city;
-      else {
+      if (typeof city === 'string') {
+        this._city = city;
+      } else {
         this._city = this.cityToString(city);
         this._zone = this.cityToZone(city);
       }
@@ -211,6 +212,7 @@ export enum Area {
   UnitedArabEmirates = 971,
 }
 
+// tslint:disable: no-bitwise
 export enum City {
   // China
   Beijing = (Area.China << 16) | 10,

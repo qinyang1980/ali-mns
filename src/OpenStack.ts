@@ -24,7 +24,7 @@ export class OpenStack {
   // head: optional, request heads
   // options: optional, request options
   public sendP(method: string, url: string, body?: any, headers?: any, options?: any) {
-    const req: any = { method: method, url: url };
+    const req: any = { method, url };
     if (body) req.body = XmlBuilder.create(body).toString();
 
     req.headers = this.makeHeaders(method, url, headers, req.body);
@@ -39,6 +39,7 @@ export class OpenStack {
     }
 
     const parseStringP = PROMISE.denodeify(Xml2js.parseString);
+    // tslint:disable-next-line: no-string-literal
     const ret = Request['requestP'](req)
       .then(response => {
         // convert the body from xml to json
@@ -68,7 +69,7 @@ export class OpenStack {
       });
 
     // google analytics
-    if (this._gaRGA % 1000000 == 0) this._ga.send('OpenStack.sendP', this._gaRGA, url);
+    if (this._gaRGA % 1000000 === 0) this._ga.send('OpenStack.sendP', this._gaRGA, url);
     this._gaRGA++;
 
     return ret;
@@ -84,10 +85,11 @@ export class OpenStack {
 
   private makeHeaders(mothod: string, url: string, headers: any, body?: string) {
     // if not exist, create one
-    if (!headers)
+    if (!headers) {
       headers = {
         'User-Agent': 'Node/' + process.version + ' (' + process.platform + ')',
       };
+    }
 
     let contentMD5 = '';
     let contentType = '';
@@ -104,7 +106,7 @@ export class OpenStack {
 
     // lowercase & sort & extract the x-mns-<any>
     const headsLower: any = {};
-    const keys: Array<string> = [];
+    const keys: string[] = [];
     for (const key in headers) {
       if (headers.hasOwnProperty(key)) {
         const lower = key.toLowerCase();

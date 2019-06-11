@@ -63,14 +63,21 @@ export class Topic implements ITopic {
   }
 
   public subscribeP(name: string, endPoint: string, notifyStrategy?: string, notifyContentFormat?: string, filterTag?: string) {
-    const body = {
+    interface IBody {
+      Subscription: any;
+      NotifyStrategy?: any;
+      NotifyContentFormat?: any;
+      FilterTag?: any;
+    }
+
+    const body: IBody = {
       Subscription: {
         Endpoint: endPoint,
       },
     };
-    if (notifyStrategy) body.Subscription['NotifyStrategy'] = notifyStrategy;
-    if (notifyContentFormat) body.Subscription['NotifyContentFormat'] = notifyContentFormat;
-    if (filterTag) body.Subscription['FilterTag'] = filterTag;
+    if (notifyStrategy) body.Subscription.NotifyStrategy = notifyStrategy;
+    if (notifyContentFormat) body.Subscription.NotifyContentFormat = notifyContentFormat;
+    if (filterTag) body.Subscription.FilterTag = filterTag;
     const url = Url.resolve(this._urlSubscription, name);
     debug('PUT ' + url, body);
     return this._openStack.sendP('PUT', url, body);
