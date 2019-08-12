@@ -93,6 +93,9 @@ export class Region {
       case City.Shenzhen:
         value = 'shenzhen';
         break;
+      case City.Zhangjiakou:
+        value = 'zhangjiakou';
+        break;
 
       case City.Hongkong:
         value = 'hongkong';
@@ -137,6 +140,7 @@ export class Region {
       case City.Qingdao:
       case City.Hangzhou:
       case City.Shenzhen:
+      case City.Zhangjiakou:
         value = 'cn';
         break;
 
@@ -220,6 +224,7 @@ export enum City {
   Qingdao = (Area.China << 16) | 532,
   Hangzhou = (Area.China << 16) | 571,
   Shenzhen = (Area.China << 16) | 755,
+  Zhangjiakou = (Area.China << 16) | 313,
   Hongkong = (Area.Hongkong << 16) | 0,
   // AsiaPacific
   Tokyo = (Area.Japan << 16) | 3,
