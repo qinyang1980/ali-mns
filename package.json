@@ -1,6 +1,6 @@
 {
   "name": "ali-mns-sdk",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "The nodejs SDK for aliyun mns service",
   "main": "index.js",
   "dependencies": {
@@ -35,7 +35,8 @@
   },
   "scripts": {
     "build": "gulp build",
-    "test": "node node_modules/mocha/bin/mocha"
+    "test": "node node_modules/mocha/bin/mocha",
+    "lint": "tslint --project . -c tslint.json"
   },
   "repository": {
     "type": "git",
